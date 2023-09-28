@@ -1,0 +1,4 @@
+All mods in mods/minetest are licensed with LGPLv2.1 (From Minetest game)
+All mods in mods/blockassault are licensed with LGPLv2.1 (From BlockAssault Game)
+The mod 'map_engine' is licensed with LGPLv2.1
+All textures (textures & menu textures) in the root of this game are licensed with LGPLv2.1 (Some textures are copied from BlockAssault)
