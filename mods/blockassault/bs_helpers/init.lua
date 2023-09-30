@@ -76,7 +76,10 @@ function RunCallbacks(tabled, ...)
 	if tabled and type(tabled) == "table" then
 		for i = 1, #tabled do
 			if type(tabled[i]) == "function" then
-				tabled[i](...)
+				local res = tabled[i](...)
+				if res == false then
+					return false
+				end
 			end
 		end
 	end
