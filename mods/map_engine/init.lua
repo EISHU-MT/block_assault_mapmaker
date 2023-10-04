@@ -345,7 +345,8 @@ function export(name)
 		SendError(name, "Failed to export map!, some teams inst configured!")
 		return
 	end
-
+	
+	
 	we_select(name)
 	show_progress_formspec(name, "Exporting...")
 
@@ -355,6 +356,16 @@ function export(name)
 	local conf, r = io.open(path.."mod.conf", "w")
 	if not init_file then
 		error("Could not create initial file for map! Reason: "..tostring(r))
+	end
+	
+	local meta = Settings(path .. "map.cfg")
+	
+	-- Run Callbacks before save
+	local res = RunCallbacks(CallBacks.OnExportMap, meta)
+	
+	if res == false then
+		SendError(name, "Something failed!")
+		return
 	end
 
 	-- Reset mod_storage
@@ -388,7 +399,7 @@ function export(name)
 	SendWarning(name, "NOTE: If theres any mod that provides decorations (Nodes) to this game and its used in this map, modify 'mod.conf' file and add in 'depends' your mod names (need to be technical names).")
 	SendWarning(name, "Before changing the 'depends' field, dont remove 'bs_maps' and 'bs_core' because they are need to work this map.")
 	
-	local meta = Settings(path .. "map.cfg")
+	
 	meta:set("name", context.maptitle)
 	meta:set("author", context.mapauthor)
 	if context.mapinitial ~= "" then
@@ -398,8 +409,7 @@ function export(name)
 	meta:set("r", context.center.r)
 	meta:set("h", context.center.h)
 	
-	-- Run Callbacks before save
-	RunCallbacks(CallBacks.OnExportMap, meta)
+	
 	
 	for team_name, pos in pairs(MapMaker.PlayerTeams) do
 		if team_name and pos then
