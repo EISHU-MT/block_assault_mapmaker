@@ -361,7 +361,7 @@ function export(name)
 	local meta = Settings(path .. "map.cfg")
 	
 	-- Run Callbacks before save
-	local res = RunCallbacks(CallBacks.OnExportMap, meta)
+	local res = RunCallbacks(CallBacks.OnExportMap, meta, Player(name))
 	
 	if res == false then
 		SendError(name, "Something failed!")
