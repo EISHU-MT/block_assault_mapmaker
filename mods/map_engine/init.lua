@@ -13,7 +13,7 @@ maps = {}
 CallBacks = {
 	OnExportMap = {}
 }
-CallBacks["register_OnExportMap"] = function(function_to_run) table.insert(CallBacks.register_OnExportMap, function_to_run) end
+CallBacks["register_OnExportMap"] = function(function_to_run) table.insert(CallBacks.OnExportMap, function_to_run) end
 
 local storage = minetest.get_mod_storage()
 
