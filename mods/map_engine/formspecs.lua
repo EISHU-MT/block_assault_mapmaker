@@ -39,7 +39,7 @@ function ReturnFormspecTeamEditing(player, pos)
 			"box[0,0;6,0.5;#00FF00]" ..
 			"label[2,0.2;Team Selector]" ..
 			"label[0.3,1.1;Actual Team: "..GetTeamByPos(pos).."]" ..
-			"dropdown[0.2,1.5;5.6,1;;Red,Blue,Green,Yellow;"..tostring(index_to_return)..";false]" ..
+			"dropdown[0.2,1.5;5.6,1;team;Red,Blue,Green,Yellow;"..tostring(index_to_return)..";false]" ..
 			"button_exit[0.2,2.9;5.6,0.9;select;Select & Exit]"
 			return form
 		else
@@ -130,15 +130,21 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			
 			local team_string = GetTeamByIndex(fields.team)
 			
-			if MapMaker.PlayerTeams[team_string] then
-				core.set_node(MapMaker.PlayerTeams[team_string], {name="air"})
-				SendWarning(player, "The team '"..team_string.."' pos is being replaced with '"..core.pos_to_string(MapMaker.PlayerSelectedTeamSelector[name]).."'")
-				MapMaker.PlayerTeams[team_string] = MapMaker.PlayerSelectedTeamSelector[name]
-			else
-				MapMaker.PlayerTeams[team_string] = MapMaker.PlayerSelectedTeamSelector[name]
-			end
+			print(team_string, fields.team)
 			
-			core.set_node(MapMaker.PlayerSelectedTeamSelector[Name(player)], {name="map_engine:"..team_string})
+			if team_string then
+				if MapMaker.PlayerTeams[team_string] then
+					core.set_node(MapMaker.PlayerTeams[team_string], {name="air"})
+					SendWarning(player, "The team '"..team_string.."' pos is being replaced with '"..core.pos_to_string(MapMaker.PlayerSelectedTeamSelector[name]).."'")
+					MapMaker.PlayerTeams[team_string] = MapMaker.PlayerSelectedTeamSelector[name]
+				else
+					MapMaker.PlayerTeams[team_string] = MapMaker.PlayerSelectedTeamSelector[name]
+				end
+				
+				core.set_node(MapMaker.PlayerSelectedTeamSelector[Name(player)], {name="map_engine:"..team_string})
+			else
+				SendWarning(player, "The team has not been modified.")
+			end
 		elseif fields.team then
 			SendAnnouce(player, "You selected \""..fields.team.."\"")
 		end
